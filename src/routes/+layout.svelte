@@ -8,7 +8,9 @@
 	<main class="container">
 		<nav>
 			<ul>
-				<li><a href="/" class={$page.url.pathname === '/' ? 'primary' : 'secondary'}>Upload</a></li>
+				<li>
+					<a href="/" class={$page.url.pathname === '/' ? 'primary' : 'secondary'}>Capture</a>
+				</li>
 				<div class="vl" />
 				<li>
 					<a href="/view" class={$page.url.pathname === '/view' ? 'primary' : 'secondary'}>View</a>
@@ -21,25 +23,34 @@
 </body>
 
 <style>
+	body {
+		margin: 0;
+		display: flex;
+		flex-flow: column;
+		min-height: 100vh;
+	}
+
+	main {
+		flex-grow: 1;
+		padding-bottom: 2.5rem;
+	}
+
 	nav {
 		justify-content: center;
-		padding-bottom: 50px;
+		padding-bottom: 1rem;
 	}
+
 	a {
 		font-size: xx-large;
 	}
+
 	.vl {
 		border-left: 3px solid #373c44;
 		height: 3rem;
 	}
-	main {
-		padding-bottom: 2.5rem;
-	}
+
 	footer {
 		text-align: center;
-		position: absolute;
-		bottom: 0;
 		width: 100%;
-		height: 2.5rem;
 	}
 </style>

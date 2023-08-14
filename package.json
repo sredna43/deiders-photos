@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@picocss/pico": "^1.5.10"
+		"@picocss/pico": "^1.5.10",
+		"svelte-system-info": "^1.0.0"
 	}
 }
