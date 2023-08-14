@@ -1,0 +1,18 @@
+:root {
+	--nav-element-spacing-horizontal: 4rem;
+}
+
+[data-theme='light'],
+:root:not([data-theme='dark']) {
+	--priamry: #3c71f7;
+	--primary-hover: #8999f9;
+	--primary-focus: #052014;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--primary: #3c71f7;
+		--primary-hover: #8999f9;
+		--primary-focus: #052014;
+	}
+}
