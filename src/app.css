@@ -11,8 +11,9 @@
 
 @media only screen and (prefers-color-scheme: dark) {
 	:root:not([data-theme]) {
-		--primary: #3c71f7;
-		--primary-hover: #8999f9;
-		--primary-focus: #052014;
+		--primary: #4d6600;
+		--primary-hover: #779c00;
+		--primary-focus: #0e1118;
+		--background-color: #191c20;
 	}
 }
