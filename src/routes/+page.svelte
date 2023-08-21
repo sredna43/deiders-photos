@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { API_URL } from '$lib';
+
+	const MAX_FILES = 6;
 	let fileInput: HTMLInputElement;
 	let output: HTMLElement;
 
 	let showSentModal = false;
 	let showPreview = false;
+
+	let sending = true;
+	let apiError = '';
 
 	let filesSent = 0;
 
@@ -16,8 +22,8 @@
 		const files = fileInput.files;
 		output.innerHTML = '';
 		if (files && files.length > 0) {
-			if (files.length > 10) {
-				alert('Please only upload 10 files at a time');
+			if (files.length > MAX_FILES) {
+				alert(`Please only upload ${MAX_FILES} files at a time`);
 				return;
 			}
 			for (const file of files) {
@@ -27,7 +33,7 @@
 					let imgData = e.target?.result?.toString();
 					let imgName = file.name;
 
-					output.innerHTML += `<img src="${imgData}" title="${imgName}" alt="d" class="col-6" style="padding-bottom: 1rem" />`;
+					output.innerHTML += `<img src="${imgData}" title="${imgName}" alt="${imgName}" class="col-6" style="margin-bottom: calc(var(--bs-gutter-x) * 0.5);" />`;
 				};
 			}
 			showPreview = true;
@@ -37,7 +43,34 @@
 	};
 
 	const sendImages = () => {
-		console.log(fileInput.files);
+		apiError = '';
+		const files = fileInput.files;
+		const data = new FormData();
+
+		if (files) {
+			for (const file of files) {
+				data.append(
+					'files',
+					file,
+					file.name.includes('image')
+						? `${Math.round(Math.random() * (1000000000000 - 1) + 1)}${file.name}`
+						: file.name
+				);
+			}
+		}
+
+		const options = {
+			method: 'POST',
+			body: data
+		};
+		fetch(`${API_URL}/upload`, options)
+			.then(() => {
+				sending = false;
+			})
+			.catch((e: TypeError) => {
+				sending = false;
+				apiError = e.message;
+			});
 	};
 
 	const uploadButtonClicked = () => {
@@ -50,6 +83,7 @@
 
 	const submitButtonClicked = () => {
 		showSentModal = true;
+		sending = true;
 		filesSent = fileInput.files?.length || 0;
 		sendImages();
 		clearPreview();
@@ -68,14 +102,14 @@
 			<button on:click={submitButtonClicked}>Submit</button>
 		</div>
 	{:else}
-		<p>Upload up to 10 photos at a time</p>
+		<p>Upload up to {MAX_FILES} photos at a time</p>
 		<button on:click={uploadButtonClicked}>Take or Upload Photos</button>
 	{/if}
 	<input
 		on:change={fileChanged}
 		bind:this={fileInput}
 		type="file"
-		accept="image/*"
+		accept="image/jpeg, image/jpg, image/png"
 		hidden
 		multiple
 	/>
@@ -90,8 +124,15 @@
 			data-target="modal-example"
 			on:click={closeModal}
 		/>
-		<h3>Uploaded {filesSent} photo(s)</h3>
-		<h5>Thank you!</h5>
+		{#if sending}
+			<h1>Loading...</h1>
+		{:else if apiError !== ''}
+			<h1>Whoops!</h1>
+			<p>{apiError}</p>
+		{:else}
+			<h3>Uploaded {filesSent} {filesSent > 1 ? 'photo(s)' : 'photo'}</h3>
+			<h5>Thank you!</h5>
+		{/if}
 		<footer>
 			<button on:click={closeModal}>Ok</button>
 		</footer>
