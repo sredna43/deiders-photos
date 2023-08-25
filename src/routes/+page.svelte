@@ -11,6 +11,8 @@
 	let sending = true;
 	let apiError = '';
 
+	let showOk = false;
+
 	let filesSent = 0;
 
 	const clearPreview = () => {
@@ -66,14 +68,17 @@
 		fetch(`${API_URL}/upload`, options)
 			.then(() => {
 				sending = false;
+				showOk = true;
 			})
 			.catch((e: TypeError) => {
 				sending = false;
 				apiError = e.message;
+				showOk = true;
 			});
 	};
 
 	const uploadButtonClicked = () => {
+		showOk = false;
 		fileInput.click();
 	};
 
@@ -126,6 +131,7 @@
 		/>
 		{#if sending}
 			<h1>Loading...</h1>
+			<p>(This could take some time if you've uploaded many photos... hang tight!)</p>
 		{:else if apiError !== ''}
 			<h1>Whoops!</h1>
 			<p>{apiError}</p>
@@ -134,7 +140,9 @@
 			<h5>Thank you!</h5>
 		{/if}
 		<footer>
-			<button on:click={closeModal}>Ok</button>
+			{#if showOk}
+				<button on:click={closeModal}>Ok</button>
+			{/if}
 		</footer>
 	</article>
 </dialog>
