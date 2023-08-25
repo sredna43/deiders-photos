@@ -39,7 +39,9 @@
 
 <div class="view">
 	{#each imagesOnPage as image}
-		<img src={`${API_URL}/image/${image}`} alt={image} />
+		<div class="blank">
+			<img src={`${API_URL}/image/${image}`} alt={image} />
+		</div>
 	{/each}
 
 	<div class="nav-buttons">
@@ -66,6 +68,10 @@
 </div>
 
 <style>
+	.blank {
+		background: transparent url('../../static/uploading-downloading.gif') center center no-repeat;
+	}
+
 	.view {
 		align-content: center;
 		text-align: center;
