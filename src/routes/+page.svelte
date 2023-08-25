@@ -122,13 +122,15 @@
 
 <dialog open={showSentModal}>
 	<article>
-		<a
-			href="#close"
-			aria-label="Close"
-			class="close"
-			data-target="modal-example"
-			on:click={closeModal}
-		/>
+		{#if showOk}
+			<a
+				href="#close"
+				aria-label="Close"
+				class="close"
+				data-target="modal-example"
+				on:click={closeModal}
+			/>
+		{/if}
 		{#if sending}
 			<h1>Loading...</h1>
 			<p>(This could take some time if you've uploaded many photos... hang tight!)</p>
